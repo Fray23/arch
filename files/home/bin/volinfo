@@ -1,0 +1,11 @@
+#!/bin/sh
+
+status=$(pactl list sinks | grep "Mute:" | awk '{print $2}')
+volume=$(pactl list sinks | grep "Volume: front" | awk {'print $5'})
+
+if [ "$status" = "no" ]; then
+    echo "󰋋 $volume"
+else
+    echo "󰟎 $volume"
+fi
+

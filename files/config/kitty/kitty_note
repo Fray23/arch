@@ -1,0 +1,2 @@
+# set theme
+kitty +kitten themes --reload-in=all Nord

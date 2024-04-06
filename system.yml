@@ -1,0 +1,99 @@
+# pacman
+- name: Copy pacman.conf
+  copy:
+    src: files/system/pacman.conf
+    dest: /etc/pacman.conf
+    owner: root
+    group: root
+
+- name: Update system packages
+  expect:
+    command: pacman -Syu
+    responses:
+      '.*\[Y/n\].*': 'Y'
+
+- name: Create a backup of the mirrorlist
+  command: cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
+
+- name: Install pacman-contrib package
+  pacman:
+    name: pacman-contrib
+    state: present
+
+- name: Install rankmirrors package
+  pacman:
+    name: rankmirrors
+    state: present
+
+- name: Run rankmirrors to generate new mirrorlist
+  shell: rankmirrors -n 10 /etc/pacman.d/mirrorlist.bak > /etc/pacman.d/mirrorlist
+
+# local
+- name: Setup local
+  copy:
+    src: "{{ item.system_src }}"
+    dest: "/etc/"
+  loop:
+    - { system_src: "files/system/locale.gen" }
+    - { system_src: "files/system/locale.conf" }
+
+- name: Create symbolic link for timezone
+  command: locale-gen
+
+# setup time
+- name: Create symbolic link for timezone
+  command: ln -s /usr/share/zoneinfo/{{ local_time_zone }} /etc/localtime
+
+- name: Update hardware clock
+  command: hwclock --systohc --utc
+
+# dhcpcd
+- name: install dhcpcd
+  package:
+    name: dhcpcd
+    state: present
+
+- name: Enable dhcpcd service
+  systemd:
+    name: dhcpcd
+    enabled: yes
+    state: started
+
+# fstrim
+- name: Enable fstrim.timer service
+  systemd:
+    name: fstrim.timer
+    enabled: yes
+    state: started
+
+# audio
+- name: install packages
+  package:
+    name:
+      - pipewire
+      - pipewire-pulse
+      - pipewire-session-manager
+      - pavucontrol
+
+- name: Enable pipewire service for the current user
+  systemd:
+    name: pipewire
+    user: yes
+    enabled: yes
+
+# boot
+- name: Append options to arch.conf
+  command: mount -t efivarfs efivarfs /sys/firmware/efi/efivars
+
+- name: Append options to lts.conf
+  command: bootctl install
+
+- name: copy lts.conf
+  template:
+    src: files/system/lts.conf
+    dest: /boot/loader/entries/lts.conf
+
+#- name: Append options to lts.conf
+#  command: echo "options root=PARTUUID=$(blkid -s PARTUUID -o value {{ fs.root_partition }}) resume=PARTUUID=$(blkid -s PARTUUID -o value {{ fs.swap_partition }}) rw" >> /boot/loader/entries/lts.conf
+- name: Append options to lts.conf
+  command: echo "options root=PARTUUID=$(blkid -s PARTUUID -o value {{ fs.root_partition }}) rw" >> /boot/loader/entries/lts.conf
