@@ -643,6 +643,10 @@ If a Dired buffer is already opened, navigate to that buffer."
             (flymake-mode -1) ;; turn off flymake
             (remove-hook 'elpy-modules 'elpy-module-flymake)
             (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))))
+
+(setq elpy-project-roots '("/home/fs/Desktop/work/bet/ganamos-back"
+                           ))
+
 #+end_src
 
 ** tree-sitter
@@ -656,15 +660,19 @@ If a Dired buffer is already opened, navigate to that buffer."
 ** colorthemes
 #+begin_src emacs-lisp
 (custom-set-faces
- '(line-number ((t (:foreground "white"))))               ; Цвет отображения номера строки
- '(line-number-current-line ((t (:foreground "white"))))) ; Цвет текущей строки
+'(line-number ((t (:foreground "white"))))               ; Цвет отображения номера строки
+'(line-number-current-line ((t (:foreground "white"))))) ; Цвет текущей строки
+; '(line-number ((t (:foreground "black"))))               ; Цвет отображения номера строки
+; '(line-number-current-line ((t (:foreground "black"))))) ; Цвет текущей строки
 ; (load-theme 'doom-nord t)
-; (load-theme 'doom-nord-aurora t)
+(load-theme 'doom-nord-aurora t)
 ; (load-theme 'doom-nord-light t)
+; (load-theme 'doom-one-light t)
 ; (load-theme 'doom-gruvbox t)
 ; (load-theme 'doom-ayu-dark t)
 ; (load-theme 'doom-dracula t)
-(load-theme 'doom-tomorrow-night t)
+; (load-theme 'doom-tomorrow-night t)
+; (load-theme 'doom-opera t)
 ; (load-theme 'doom-monokai-pro t)
 ; (load-theme 'doom-spacegrey t)
 ; (load-theme 'doom-tokyo-night t)
@@ -673,11 +681,8 @@ If a Dired buffer is already opened, navigate to that buffer."
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/everforest-theme")
 ; (load-theme 'everforest-hard-dark t)
 
-; (add-to-list 'custom-theme-load-path "~/.emacs.d/everforest-theme")
-; (load-theme 'everforest-hard-dark t)
-
-; (add-to-list 'custom-theme-load-path "~/.emacs.d/atom-one-dark-theme")
-; (load-theme 'atom-one-dark t)
+;(add-to-list 'custom-theme-load-path "~/.emacs.d/atom-one-dark-theme")
+;(load-theme 'atom-one-dark t)
 ;
 (set-frame-parameter nil 'alpha-background 92)
 #+End_src
@@ -712,20 +717,20 @@ If a Dired buffer is already opened, navigate to that buffer."
                       :height 110
                       :weight 'medium))
 
-;(defun set-big-font ()
-;  (interactive)
-;  (set-face-attribute 'default nil
-;                      :font "JetBrainsMonoNL Nerd Font"
-;                      :height 150
-;                      :weight 'medium)
-;  (set-face-attribute 'variable-pitch nil
-;                      :font "JetBrainsMonoNL Nerd Font"
-;                      :height 160
-;                      :weight 'medium)
-;  (set-face-attribute 'fixed-pitch nil
-;                      :font "JetBrainsMonoNL Nerd Font"
-;                      :height 150
-;                      :weight 'medium))
+; (defun set-big-font ()
+;   (interactive)
+;   (set-face-attribute 'default nil
+;                       :font "JetBrainsMonoNL Nerd Font"
+;                       :height 150
+;                       :weight 'medium)
+;   (set-face-attribute 'variable-pitch nil
+;                       :font "JetBrainsMonoNL Nerd Font"
+;                       :height 160
+;                       :weight 'medium)
+;   (set-face-attribute 'fixed-pitch nil
+;                       :font "JetBrainsMonoNL Nerd Font"
+;                       :height 150
+;                       :weight 'medium))
 ; (defun set-big-font ()
 ;   (interactive)
 ;   (set-face-attribute 'default nil
@@ -750,11 +755,11 @@ If a Dired buffer is already opened, navigate to that buffer."
 (defun set-big-font ()
   (interactive)
   (set-face-attribute 'default nil
-                      :font "JetBrainsMonoNL Nerd Font"
+                      :font "Firacode Nerd Font"
                       :height 150
                       :weight 'medium)
   )
-(set-big-font)
+;(set-big-font)
 (spc-leader
   "c f" '(:ignore t :wk "font")
   "c f s" '(set-small-font :wk "small font")

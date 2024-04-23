@@ -1,0 +1,10 @@
+# - name: Configure dots files
+#   ansible.builtin.include_tasks:
+#     file: "common_files.yml"
+#
+# - name: Configure xorg
+#   ansible.builtin.include_tasks:
+#     file: "xorg_files.yml"
+- name: Configure xorg
+  ansible.builtin.include_tasks:
+    file: "theme.yml"

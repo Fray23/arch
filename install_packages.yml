@@ -48,6 +48,7 @@
           - slock
           - atril
           - transmission-gtk
+          - openssh
 
     - name: install system packages
       package:

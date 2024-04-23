@@ -1,11 +1,3 @@
-# pacman
-- name: Copy pacman.conf
-  copy:
-    src: files/system/pacman.conf
-    dest: /etc/pacman.conf
-    owner: root
-    group: root
-
 - name: Update system packages
   expect:
     command: pacman -Syu

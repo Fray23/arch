@@ -1,0 +1,13 @@
+#- name: Setup cursors
+#  unarchive:
+#    src: "{{ item.src }}"
+#    dest: "/home/{{ main_user.name }}/.local/share/icons"
+#  loop:
+#    - { src: "files/theme/Bibata-Modern-Classic.tar.xz" }
+
+- name: Setup icon theme
+  unarchive:
+    src: "{{ item.src }}"
+    dest: "/home/{{ main_user.name }}/.local/share/themes"
+  loop:
+    - { src: "files/theme/Bubble.7z" }

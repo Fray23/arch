@@ -3,6 +3,5 @@
   connection: local
   become: true
 
-  tasks:
-    - name: setup config files
-      import_tasks: system.yml
+  roles:
+    - dots
