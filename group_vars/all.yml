@@ -1,14 +1,6 @@
 main_user:
   name: fs
 
-network:
-  hostname: unknown
-
-root_partition: /dev/nvme0n1p3
-fs:
-  root_partition: /dev/nvme0n1p3
-  swap_partition: /dev/nvme0n1p2
-
 local_time_zone: !vault |
   $ANSIBLE_VAULT;1.1;AES256
   66636666343266316438393461333565383336613034363133383537373530376134363461386564

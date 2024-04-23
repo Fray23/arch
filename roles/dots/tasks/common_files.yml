@@ -1,0 +1,68 @@
+- name: Create .ssh directory
+  file:
+    path: "/home/{{ main_user.name }}/.ssh"
+    state: directory
+    mode: '0700'
+    owner: "{{ main_user.name }}"
+    group: users
+
+- name: setup publc ssh key
+  copy:
+    dest: "/home/{{ main_user.name }}/.ssh/id_rsa.pub"
+    content: "{{ ssh_pub }}"
+    mode: "0644"
+    owner: "{{ main_user.name }}"
+    group: users
+
+- name: setup private ssh key
+  copy:
+    dest: "/home/{{ main_user.name }}/.ssh/id_rsa"
+    content: "{{ ssh_private }}"
+    mode: "0600"
+    owner: "{{ main_user.name }}"
+    group: users
+
+- name: Setup home config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ main_user.name }}/"
+    owner: "{{ main_user.name }}"
+    group: users
+  loop:
+    - { src: "files/home/.moc" }
+    - { src: "files/home/.bashrc" }
+    - { src: "files/home/.tmux.conf" }
+    - { src: "files/home/create_backup.sh" }
+    - { src: "files/home/.gitconfig" }
+
+- name: Copy pacman.conf
+  copy:
+    src: files/system/pacman.conf
+    dest: /etc/pacman.conf
+    owner: root
+    group: root
+
+- name: Setup home config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ main_user.name }}/"
+    owner: "{{ main_user.name }}"
+    group: users
+  loop:
+    - { src: "home/.xinitrc" }
+    - { src: "home/.Xresources" }
+
+- name: Setup rofi theme
+  copy:
+    src: "files/config/rofi/theme"
+    dest: "/home/{{ main_user.name }}/.local/share/rofi/themes/"
+    owner: "{{ main_user.name }}"
+    group: users
+
+- name: theme for rofi
+  copy:
+    src: "files/config/rofi/theme"
+    dest: "/home/{{ main_user.name }}/.local/share/rofi/themes/"
+    owner: "{{ main_user.name }}"
+    group: users
+

@@ -1,0 +1,7 @@
+ - name: install common packages
+   ansible.builtin.include_tasks:
+     file: "common.yml"
+
+ - name: install aur packages
+   ansible.builtin.include_tasks:
+     file: "aur.yml"

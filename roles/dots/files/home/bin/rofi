@@ -1,0 +1,5 @@
+#!/bin/sh
+while read -r line; do export "$line"; done < /home/fs/scale_vars
+dpi="150"
+rofi -modi drun -show drun -show-icons -icon-theme Papirus -dpi $dpi -sorting-method fzf -sort -matching fuzzy
+# dmenu_run -fn "JetBrains-13"

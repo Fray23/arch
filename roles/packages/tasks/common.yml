@@ -1,0 +1,79 @@
+- name:
+  pacman:
+    name:
+      - htop
+      - cherrytree
+      - chromium
+      - firefox
+      - cryptsetup
+      - dbeaver
+      - docker
+      - docker-compose
+      - drawing
+      - emacs
+      - eza
+      - feh
+      - ffmpeg
+      - flameshot
+      - git
+      - git-delta
+      - gnome-sound-recorder
+      - go
+      - jq
+      - kitty
+      - mpv
+      - vim
+      - neovim
+      - net-tools
+      - steam
+      - wireguard-tools
+      - rofi
+      - python-virtualenv
+      - ripgrep
+      - telegram-desktop
+      - tmux
+      - virt-manager
+      - libreoffice-still
+      - pcmanfm
+      - papirus-icon-theme
+      - fzf
+      - nitrogen
+      - slock
+      - atril
+      - transmission-gtk
+      - openssh
+
+- name: install system packages
+  package:
+    name:
+      - ntfs-3g
+      - unzip
+      - make
+      - msr-tools
+      - ctags
+
+- name: install fonts
+  package:
+    name:
+      - ttf-fira-code
+      - ttf-firacode-nerd
+      - ttf-font-awesome
+      - ttf-hanazono
+      - ttf-iosevka-nerd
+      - ttf-jetbrains-mono-nerd
+      - ttf-liberation
+      - ttf-opensans
+      - ttf-ubuntu-mono-nerd
+
+- name: xorg apps
+  package:
+    name:
+      - xclip
+      - xarchiver
+      - libxinerama
+      - lxappearance
+
+- name: equipment
+  package:
+    name:
+      - intel-ucode

@@ -1,0 +1,16 @@
+- name: Setup home config files
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ main_user.name }}/"
+    owner: "{{ main_user.name }}"
+    group: users
+  loop:
+    - { src: "home/.xinitrc" }
+    - { src: "home/.Xresources" }
+
+- name: touchpad
+  copy:
+    src: files/xorg/30-touchpad.conf
+    dest: /etc/X11/xorg.conf.d/30-touchpad.conf
+    owner: root
+    group: root
