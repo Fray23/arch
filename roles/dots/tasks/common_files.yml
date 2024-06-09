@@ -34,6 +34,7 @@
     - { src: "files/home/.tmux.conf" }
     - { src: "files/home/create_backup.sh" }
     - { src: "files/home/.gitconfig" }
+    - { src: "files/home/bin" }
 
 - name: Setup .config dir
   copy:
