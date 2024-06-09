@@ -69,10 +69,3 @@
     owner: "{{ main_user.name }}"
     group: users
 
-- name: theme for rofi
-  copy:
-    src: "files/config/rofi/theme"
-    dest: "/home/{{ main_user.name }}/.local/share/rofi/themes/"
-    owner: "{{ main_user.name }}"
-    group: users
-
