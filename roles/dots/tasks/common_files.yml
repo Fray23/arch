@@ -35,6 +35,16 @@
     - { src: "files/home/create_backup.sh" }
     - { src: "files/home/.gitconfig" }
 
+- name: Setup .config dir
+  copy:
+    src: "{{ item.src }}"
+    dest: "/home/{{ main_user.name }}/.config/"
+    owner: "{{ main_user.name }}"
+    group: users
+  loop:
+    - { src: "files/config/kitty" }
+    - { src: "files/config/nvim" }
+
 - name: Copy pacman.conf
   copy:
     src: files/system/pacman.conf
