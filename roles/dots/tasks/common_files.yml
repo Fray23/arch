@@ -64,7 +64,7 @@
 
 - name: Setup rofi theme
   copy:
-    src: "files/config/rofi/theme"
+    src: "files/config/rofi/themes/"
     dest: "/home/{{ main_user.name }}/.local/share/rofi/themes/"
     owner: "{{ main_user.name }}"
     group: users
