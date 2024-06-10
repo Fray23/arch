@@ -5,3 +5,7 @@
  - name: install aur packages
    ansible.builtin.include_tasks:
      file: "aur.yml"
+
+ - name: install docker
+   ansible.builtin.include_tasks:
+     file: "docker.yml"

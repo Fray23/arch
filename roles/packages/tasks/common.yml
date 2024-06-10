@@ -1,4 +1,4 @@
-- name:
+- name: install common apps
   pacman:
     name:
       - htop
@@ -42,6 +42,7 @@
       - atril
       - transmission-gtk
       - openssh
+      - pigz
 
 - name: install system packages
   package:

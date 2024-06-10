@@ -1,0 +1,26 @@
+- name: install docker
+  pacman:
+    name:
+      - docker
+      - docker-compose
+
+- name: Configure Docker
+  hosts: your_host
+  become: yes
+  tasks:
+    - name: Ensure docker group exists
+      group:
+        name: docker
+        state: present
+
+    - name: Add user to docker group
+      user:
+        name: "{{ main_user.name }}"
+        groups: docker
+        append: yes
+
+    - name: Enable Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
