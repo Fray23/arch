@@ -1,16 +1,8 @@
-#- aur: name=moc-pulse user=fs
-#- aur: name=vimiv-qt user=fs
-#- aur: name=ttf-devicons user=fs
-
 - name: Install AUR packages
-  hosts: your_host
-  become: yes
-  tasks:
-    - name: Install AUR packages
-      aur:
-        name: "{{ item }}"
-        user: "{{ main_user.name }}"
-      loop:
-        - moc-pulse
-        - vimiv-qt
-        - ttf-devicons
+  aur:
+    name: "{{ item }}"
+    user: "{{ main_user.name }}"
+  loop:
+    - moc-pulse
+    - vimiv-qt
+    - ttf-devicons

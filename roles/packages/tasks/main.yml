@@ -1,11 +1,7 @@
- - name: install common packages
-   ansible.builtin.include_tasks:
-     file: "common.yml"
-
  - name: install aur packages
    ansible.builtin.include_tasks:
      file: "aur.yml"
 
- - name: install docker
+ - name: include tasks install docker file
    ansible.builtin.include_tasks:
      file: "docker.yml"
