@@ -1,3 +1,7 @@
+ - name: install packages from main repository
+   ansible.builtin.include_tasks:
+     file: "apps.yml"
+
  - name: install aur packages
    ansible.builtin.include_tasks:
      file: "aur.yml"

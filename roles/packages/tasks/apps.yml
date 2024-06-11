@@ -1,4 +1,11 @@
-- name: install common apps
+- name: install common packages
+  package:
+    - name:
+      - wget
+      - net-tools
+      - openssh
+
+- name: install apps
   pacman:
     name:
       - htop
@@ -20,11 +27,10 @@
       - gnome-sound-recorder
       - go
       - jq
-      - kitty
+      - alacritty
       - mpv
       - vim
       - neovim
-      - net-tools
       - steam
       - wireguard-tools
       - rofi
@@ -41,7 +47,6 @@
       - slock
       - atril
       - transmission-gtk
-      - openssh
       - pigz
 
 - name: install system packages
