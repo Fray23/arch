@@ -22,6 +22,9 @@ return require('packer').startup(function(use)
     use 'maxmx03/solarized.nvim'
     use 'antonk52/lake.nvim'
 
+    -- auto save
+    use 'pocco81/auto-save.nvim'
+
     -- nerd tree
     use 'preservim/nerdtree'
     use 'Xuyuanp/nerdtree-git-plugin'
