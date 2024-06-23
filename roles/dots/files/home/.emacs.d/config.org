@@ -78,6 +78,7 @@
     bm
     vterm
     org-download
+    restclient
     magit
     magit-delta
     image-dired
@@ -954,6 +955,9 @@ names, e.g. #0000ff is displayed in white with a blue background.
             (shell-command command output-buffer)
             (goto-char (point-max)))
 	(message command)))
+
+(require 'restclient)
+(add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 (spc-leader
   "r" '(:ignore t :wk "rest")
