@@ -14,7 +14,6 @@
   - [[#dired][dired]]
   - [[#image-dired][image dired]]
   - [[#org-download][org-download]]
-  - [[#restclient][restclient]]
   - [[#perspective][perspective]]
   - [[#anzu][anzu]]
   - [[#doom-modeline][doom-modeline]]
@@ -27,7 +26,6 @@
   - [[#project][project]]
   - [[#dired-1][DIRED]]
   - [[#sudo-edit--code-sudo-editsplitperfect-marginjson][Sudo Edit & code (sudo edit/split/perfect margin/json)]]
-  - [[#restclient-1][Restclient]]
   - [[#magit][Magit]]
 - [[#org-settings][ORG settings]]
   - [[#org-hot-key][org hot key]]
@@ -37,8 +35,8 @@
   - [[#org-agenda][org agenda]]
   - [[#org-image][Org Image]]
 - [[#programming][PROGRAMMING]]
-  - [[#linters][linters]]
   - [[#python][python]]
+  - [[#emacs-lisp][Emacs-Lisp]]
 - [[#decorations][decorations]]
   - [[#colorthemes][colorthemes]]
   - [[#diff][diff]]
@@ -50,6 +48,8 @@
   - [[#evil-snipe][evil-snipe]]
   - [[#org-chckbox-hl][org chckbox hl]]
   - [[#hl-todo][hl-todo]]
+- [[#scripts][scripts]]
+  - [[#rest][REST]]
 - [[#tood][TOOD]]
 
 * auto install packages
@@ -78,7 +78,6 @@
     bm
     vterm
     org-download
-    restclient
     magit
     magit-delta
     image-dired
@@ -142,6 +141,7 @@
 (global-hl-line-mode 1)                                   ;  cursor line
 (add-hook 'before-save-hook 'delete-trailing-whitespace)  ;  Удаление пустых пробелов в конце строк перед сохранением файла
 (blink-cursor-mode 0)                                     ;  cursorline
+(setq display-fill-column-indicator nil)
 #+end_src
 
 * main packages
@@ -259,7 +259,7 @@ https://github.com/emacs-evil/evil
   (package-refresh-contents)
   (package-install 'counsel))
 
-(setq counsel-find-file-ignore-regexp (regexp-opt '("^\.")))
+(setq counsel-fzf-cmd "find . -type f -not -path '*/.*' | fzf -f \"%s\"")
 #+end_src
 
 ** dired
@@ -308,11 +308,6 @@ https://github.com/emacs-evil/evil
 (add-hook 'dired-mode-hook 'org-download-enable)
 #+end_src
 
-** restclient
-#+begin_src emacs-lisp
-(require 'restclient)
-(add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
-#+end_src
 
 ** perspective
 #+begin_src emacs-lisp
@@ -568,14 +563,6 @@ If a Dired buffer is already opened, navigate to that buffer."
 )
 #+end_src
 
-** Restclient
-#+begin_src emacs-lisp
-(spc-leader
-  "r" '(:ignore t :wk "rest client")
-  "r s" '(restclient-http-send-current-stay-in-window :wk "send http")
-)
-#+end_src
-
 ** Magit
 #+begin_src emacs-lisp
 
@@ -625,6 +612,7 @@ If a Dired buffer is already opened, navigate to that buffer."
   "o e" '(org-edit-src-code :wk "org babel execute")
   "o r" '(org-reset-checkbox-state-subtree :wk "reset checkboxs")
   "o g" '(org-agenda :wk "org agenda")
+  "o m" '(eval-buffer :wk "eval buffer")
 
   "h RET" '(org-meta-return :wk "org return (insert lists))")
 )
@@ -696,48 +684,48 @@ If a Dired buffer is already opened, navigate to that buffer."
 
 
 * PROGRAMMING
-** linters
-*** flycheck
-#+begin_src emacs-lisp
-(global-flycheck-mode 1)
-(with-eval-after-load 'flycheck
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
-(flycheck-add-next-checker 'python-flake8 'python-pylint 'python-mypy)
-
-(flymake-mode -1)
-#+end_src
-
 ** python
-*** python-mode
-#+begin_src emacs-lisp
-(add-hook 'python-mode-hook
-          (lambda ()
-            (setq indent-tabs-mode nil)
-            (setq tab-width 4)
-            (setq python-indent-offset 4)
-            (elpy-enable)
-            (elpy-mode)
-            (flymake-mode -1) ;; turn off flymake
-            (remove-hook 'elpy-modules 'elpy-module-flymake)
-            (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))))
-#+end_src
-*** lsp
-pip install 'python-language-server[all]'
-
-*** enviroment
-#+begin_src emacs-lisp
-(use-package pyvenv
-  :config
-  (pyvenv-mode 1))
-#+end_src
-
 *** tree-sitter
 #+begin_src emacs-lisp
 (add-hook 'python-mode-hook #'tree-sitter-mode +1)
 (add-hook 'python-mode-hook #'tree-sitter-hl-mode +1)
 #+end_src
 
+*** lsp
+#+begin_src emacs-lisp
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))  ; or lsp-deferred
 
+(setq lsp-diagnostics-provider :none)
+#+end_src
+
+*** LINT
+#+begin_src emacs-lisp
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode)
+  :config
+  (setq-default flycheck-disabled-checkers '(lsp))
+  (setq flycheck-python-flake8-executable "flake8")
+  (setq flycheck-python-pylint-executable "pylint")
+  ; (flycheck-add-next-checker 'python-flake8 '(warning . python-pylint))
+  (flycheck-add-next-checker 'python-flake8 'python-pylint)
+  )
+;(flycheck-add-next-checker 'python-flake8 'python-pylint)
+#+end_src
+
+#+begin_src emacs-lisp
+(use-package python
+  :hook (python-mode . (lambda ()
+                         (flycheck-mode)
+                         )))
+#+end_src
+** Emacs-Lisp
+*** Run code
 * decorations
 ** colorthemes
 #+begin_src emacs-lisp
@@ -766,8 +754,8 @@ pip install 'python-language-server[all]'
 ; (add-to-list 'custom-theme-load-path "~/.emacs.d/everforest-theme")
 ; (load-theme 'everforest-hard-dark t)
 
-;(add-to-list 'custom-theme-load-path "~/.emacs.d/atom-one-dark-theme")
-;(load-theme 'atom-one-dark t)
+; (add-to-list 'custom-theme-load-path "~/.emacs.d/atom-one-dark-theme")
+; (load-theme 'atom-one-dark t)
 ;
 (set-frame-parameter nil 'alpha-background 90)
 #+end_src
@@ -944,6 +932,33 @@ names, e.g. #0000ff is displayed in white with a blue background.
 #+begin_src emacs-lisp
 ;(require 'hl-todo)
 ;(global-hl-todo-mode +1)
+#+end_src
+
+* scripts
+** REST
+#+begin_src emacs-lisp
+(defun send-easy-http ()
+  (interactive)
+  (let (
+	(output-buffer (get-buffer-create "*Rest Output*"))
+	(command (concat "python /home/fs/bin/easy_http.py " buffer-file-name " " (projectile-project-root))))
+	(unless (get-buffer-window output-buffer)
+	    (split-window-right)
+	    (other-window 1)
+	    (switch-to-buffer output-buffer)
+	    (other-window -1)
+        )
+	(with-current-buffer output-buffer
+	    (js-mode)
+            (erase-buffer)
+            (shell-command command output-buffer)
+            (goto-char (point-max)))
+	(message command)))
+
+(spc-leader
+  "r" '(:ignore t :wk "rest")
+  "r s" '(send-easy-http :wk "send http")
+)
 #+end_src
 
 * TOOD
