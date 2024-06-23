@@ -1,6 +1,6 @@
-- name: install common packages
-  package:
-    - name:
+- name: install apps0
+  pacman:
+    name:
       - wget
       - net-tools
       - openssh
@@ -28,11 +28,12 @@
       - go
       - jq
       - alacritty
+      - kitty
       - mpv
       - vim
-      - neovim
       - steam
       - wireguard-tools
+      - openresolv
       - rofi
       - python-virtualenv
       - ripgrep
@@ -48,6 +49,9 @@
       - atril
       - transmission-gtk
       - pigz
+      - rsync
+      - android-file-transfer
+      - dunst
 
 - name: install system packages
   package:
@@ -61,6 +65,8 @@
 - name: install fonts
   package:
     name:
+      - noto-fonts      # for all language
+      - noto-fonts-cjk  # for all language
       - ttf-fira-code
       - ttf-firacode-nerd
       - ttf-font-awesome
@@ -78,8 +84,5 @@
       - xarchiver
       - libxinerama
       - lxappearance
+      - picom
 
-- name: equipment
-  package:
-    name:
-      - intel-ucode

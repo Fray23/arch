@@ -1,4 +1,5 @@
 import uuid
+import random
 import os
 import sys
 import requests
@@ -51,7 +52,12 @@ def set_vars(body):
         if isinstance(value, str):
             value = value.replace('{{hex}}', uuid.uuid4().hex)
             value = value.replace('{{uuid}}', str(uuid.uuid4()))
-            body[key] = value
+            if ':code:' in value:
+                value = value.replace(':code:', '')
+                value = eval(f"{value}")
+                print(value)
+
+            body[key] = str(value)
 
         if isinstance(value, dict):
             set_vars(value)
@@ -70,10 +76,10 @@ def send_req(method, url, body_txt):
     else:
         resp = func(url, headers=headers, json=body, cookies=cookie)
 
-    print(f"status_code {'':<18} {resp.status_code}")
+    print(f"// status_code {'':<18} {resp.status_code}")
 
     for header_name, header_value in resp.headers.items():
-        print(f"{header_name:<30} {header_value}")
+        print(f"// {header_name:<30} {header_value}")
     try:
         resp_content = resp.json()
         print(json.dumps(resp_content, indent=2))
